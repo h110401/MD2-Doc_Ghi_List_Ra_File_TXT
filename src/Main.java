@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -6,44 +7,48 @@ public class Main {
 
     public static void main(String[] args) {
 
+        //  Lưu list vào file txt
+
         List<Student> studentList = new ArrayList<>();
 
-        studentList.add(new Student("Duc Ga 1", 19));
-        studentList.add(new Student("Duc Ga 5", 19));
-        studentList.add(new Student("Duc Ga 5", 20));
-        studentList.add(new Student("Duc Ga 5", 18));
-        studentList.add(new Student("Duc Ga 4", 19));
-        studentList.add(new Student("Duc Ga 3", 19));
-        studentList.add(new Student("Duc Ga 2", 19));
-        studentList.add(new Student("Hung", 18));
+        studentList.add(new Student(1, "Duc Ga 1", 19));
+        studentList.add(new Student(2, "Duc Ga 4", 19));
+        studentList.add(new Student(4, "Duc Ga 2", 19));
+        studentList.add(new Student(10, "Hung", 18));
 
+        try {
+            FileOutputStream fos = new FileOutputStream("src/data/studentList.txt");
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
 
-        Collections.sort(studentList);
+            oos.writeObject(studentList);
 
-        // Sap xep list bang cach dung comparable
-        System.out.println("COMPARABLEEEEEEEEEEEEEEEE");
-        for (Student student : studentList) {
-            System.out.println(student);
+            fos.close();
+            oos.close();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //  Lấy list từ file txt
+
+        List<Student> students = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream("src/data/studentList.txt");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            students = (List<Student>) ois.readObject();
+
+            fis.close();
+            ois.close();
+
+        } catch (IOException e) {   // IOException  ngoại lệ khi đọc ghi file
+            System.out.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
         }
 
         // Show list
-
-        System.out.println();
-        System.out.println();
-
-        // Clone student list
-        List<Student> studentList2 = new ArrayList<>(studentList);
-
-        CompareStudentByAge compareAge = new CompareStudentByAge();
-
-        CompareStudentById compareId = new CompareStudentById();
-
-        // Sap xep list bang cach dung comparator
-
-        Collections.sort(studentList2, compareAge);
-
-        System.out.println("COMPARATORRRRRRRRRRRRRRRRRRRR");
-        for (Student student : studentList2) {
+        for (Student student : students) {
             System.out.println(student);
         }
 

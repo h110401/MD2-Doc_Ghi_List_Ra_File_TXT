@@ -16,3 +16,8 @@ search - duyệt vòng for / foreach
 
 sort  -   comparable /  comparator  (interface)
           tinh tu    /  cong cu so sanh
+id tu tang
+find by id
+
+I/0
+
